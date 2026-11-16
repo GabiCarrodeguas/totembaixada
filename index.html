@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totem Turístico da Baixada Santista- Autoatendimento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        santos: {
+                            dark: '#041C27',
+                            primary: '#062B3A',
+                            ocean: '#087E9E',
+                            cyan: '#43C6D9',
+                            gold: '#FFC857',
+                            accent: '#FF9F1C',
+                            bgLight: '#F0F8FF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            user-select: none; /* Ideal para Totem Touch */
+            -webkit-user-select: none;
+        }
+
+        /* Estilo para Scrollbar oculta mas funcional */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Modo Alto Contraste */
+        body.high-contrast {
+            background-color: #000000 !important;
+            color: #FFFF00 !important;
+        }
+        body.high-contrast .hc-target {
+            background-color: #000000 !important;
+            border: 2px solid #FFFF00 !important;
+            color: #FFFF00 !important;
+        }
+        body.high-contrast .hc-text {
+            color: #FFFF00 !important;
+        }
+        body.high-contrast .hc-accent {
+            background-color: #FFFF00 !important;
+            color: #000000 !important;
+        }
+
+        /* Efeito Ativo de Toque (Touch Feedback) */
+        .touch-active:active {
+            transform: scale(0.97);
+            filter: brightness(0.9);
+        }
+
+        /* Animações de Transição de Telas */
+        .screen-fade {
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Indicador Pulsante Ao Vivo */
+        .pulse-live {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Animação Suave das Ondas SVG de Fundo */
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-25px); }
+            100% { transform: translateX(0); }
+        }
+        .animate-wave-slow {
+            animation: waveMove 8s ease-in-out infinite;
+        }
+        .animate-wave-fast {
+            animation: waveMove 5s ease-in-out infinite reverse;
+        }
+    </style>
+</head>
+<body class="bg-santos-dark text-white min-h-screen flex justify-center items-center p-0 sm:p-4 overflow-x-hidden">
+
+    <!-- Container Principal com Formato de Totem Kiosk -->
+    <div id="kiosk-container" class="w-full max-w-md h-screen sm:h-[920px] bg-gradient-to-b from-santos-primary via-santos-dark to-black sm:rounded-[36px] shadow-2xl flex flex-col justify-between overflow-hidden relative border-0 sm:border-8 border-santos-ocean/30 transition-all duration-300">
+
+        <!-- ONDAS DE FUNDO FIXAS (PADRÃO DE ONDAS MARINHAS DA ORLA DE SANTOS) -->
+        <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
+            <!-- Camada de Ondas Inferior -->
+            <svg class="absolute bottom-12 left-0 w-[140%] h-48 animate-wave-slow" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C150,90 350,-40 500,40 C650,120 900,10 1200,60 L1200,120 L0,120 Z" fill="#087E9E" opacity="0.6"></path>
+            </svg>
+            <svg class="absolute bottom-8 left-0 w-[140%] h-40 animate-wave-fast" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,30 C200,100 450,10 650,70 C850,120 1050,20 1200,50 L1200,120 L0,120 Z" fill="#43C6D9" opacity="0.4"></path>
+            </svg>
+            <svg class="absolute bottom-0 left-0 w-[140%] h-32" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,50 C300,10 600,90 900,30 C1050,0 1150,40 1200,60 L1200,120 L0,120 Z" fill="#062B3A" opacity="0.8"></path>
+            </svg>
+        </div>
+
+        <!-- BARRA SUPERIOR / CABEÇALHO COM ACESSIBILIDADE E HORA -->
+        <header class="bg-santos-primary/90 backdrop-blur-md p-4 border-b border-santos-cyan/20 flex justify-between items-center z-20 hc-target">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('home')">
+                <div class="bg-santos-ocean p-2 rounded-xl text-santos-gold shadow-md">
+                    <i class="fa-solid fa-water-ladder text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-wide text-white hc-text">Baixada Santista</h1>
+                    <p class="text-[10px] uppercase text-santos-cyan tracking-widest hc-text">A Cidade Te Leva</p>
+                </div>
+            </div>
+
+            <!-- Ferramentas Acessíveis -->
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleAudioReader()" title="Ouvir Conteúdo" class="touch-active bg-santos-ocean/30 hover:bg-santos-ocean text-white p-2.5 rounded-full border border-santos-cyan/30 text-xs flex items-center justify-center w-9 h-9 hc-target">
+                    <i id="audio-icon" class="fa-solid fa-volume-high"></i>
+                </button>
+                <button onclick="changeFontSize(1)" title="Aumentar Fonte" class="touch-active bg-santos-ocean/30 hover:bg-santos-ocean text-white p-2.5 rounded-full border border-santos-cyan/30 text-xs font-bold w-9 h-9 flex items-center justify-center hc-target">
+                    A+
+                </button>
+                <button onclick="toggleHighContrast()" title="Alto Contraste" class="touch-active bg-santos-ocean/30 hover:bg-santos-ocean text-white p-2.5 rounded-full border border-santos-cyan/30 text-xs w-9 h-9 flex items-center justify-center hc-target">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
+                <div id="clock" class="text-xs font-semibold text-santos-cyan pl-2 border-l border-santos-cyan/30 hc-text">
+                    19:42
+                </div>
+            </div>
+        </header>
+
+        <!-- ÁREA DE CONTEÚDO PRINCIPAL (SPA) -->
+        <main id="main-content" class="flex-1 overflow-y-auto no-scrollbar relative p-4 flex flex-col justify-start z-10">
+
+            <!-- 1. TELA INICIAL (BOAS-VINDAS) -->
+            <section id="screen-home" class="screen-fade space-y-5 my-auto py-2 relative">
+                
+                <!-- Banner de Boas-Vindas com detalhes praianos -->
+                <div class="relative rounded-2xl overflow-hidden shadow-lg border border-santos-cyan/30 h-44 bg-cover bg-center flex flex-col justify-end p-4" style="background-image: linear-gradient(to top, rgba(4,28,39,0.95), rgba(4,28,39,0.3)), url('https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80');">
+                    <!-- Ondas embutidas no banner -->
+                    <div class="absolute inset-x-0 top-0 h-12 opacity-30 pointer-events-none">
+                        <svg class="w-full h-full" viewBox="0 0 500 80" preserveAspectRatio="none">
+                            <path d="M0,0 L500,0 L500,40 Q250,80 0,40 Z" fill="#43C6D9"></path>
+                        </svg>
+                    </div>
+                    <span class="bg-santos-accent text-santos-dark font-extrabold text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full w-max mb-1">
+                        Portal Oficial
+                    </span>
+                    <h2 class="text-2xl font-black text-white leading-tight hc-text">DESCUBRA A BAIXADA SANTISTA</h2>
+                    <p class="text-xs text-santos-cyan font-medium hc-text">Explore • Planeje • Viva a Cidade</p>
+                </div>
+
+                <!-- Acesso Rápido Grid de Botões Grandes -->
+                <div class="grid grid-cols-2 gap-3.5">
+                    <button onclick="navigateTo('transport')" class="touch-active bg-gradient-to-br from-santos-primary/90 to-santos-ocean/80 backdrop-blur-sm p-4 rounded-2xl border border-santos-cyan/30 text-left flex flex-col justify-between h-32 shadow-md relative overflow-hidden group hc-target">
+                        <div class="bg-santos-ocean/40 p-3 rounded-xl w-max text-santos-gold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-train-tram text-2xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-base block text-white hc-text">Transporte & VLT</span>
+                            <span class="text-[11px] text-santos-cyan hc-text">Horários, rotas e bilhetes</span>
+                        </div>
+                    </button>
+
+                    <button onclick="navigateTo('explore')" class="touch-active bg-gradient-to-br from-santos-primary/90 to-santos-ocean/80 backdrop-blur-sm p-4 rounded-2xl border border-santos-cyan/30 text-left flex flex-col justify-between h-32 shadow-md relative overflow-hidden group hc-target">
+                        <div class="bg-santos-ocean/40 p-3 rounded-xl w-max text-santos-gold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-umbrella-beach text-2xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-base block text-white hc-text">Explorar Santos</span>
+                            <span class="text-[11px] text-santos-cyan hc-text">Praias, história e cultura</span>
+                        </div>
+                    </button>
+
+                    <button onclick="navigateTo('events')" class="touch-active bg-gradient-to-br from-santos-primary/90 to-santos-ocean/80 backdrop-blur-sm p-4 rounded-2xl border border-santos-cyan/30 text-left flex flex-col justify-between h-32 shadow-md relative overflow-hidden group hc-target">
+                        <div class="bg-santos-ocean/40 p-3 rounded-xl w-max text-santos-gold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-calendar-days text-2xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-base block text-white hc-text">Eventos</span>
+                            <span class="text-[11px] text-santos-cyan hc-text">Shows, exposições e festas</span>
+                        </div>
+                    </button>
+
+                    <button onclick="navigateTo('accessibility')" class="touch-active bg-gradient-to-br from-santos-primary/90 to-santos-ocean/80 backdrop-blur-sm p-4 rounded-2xl border border-santos-cyan/30 text-left flex flex-col justify-between h-32 shadow-md relative overflow-hidden group hc-target">
+                        <div class="bg-santos-ocean/40 p-3 rounded-xl w-max text-santos-gold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-universal-access text-2xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-base block text-white hc-text">Acessibilidade</span>
+                            <span class="text-[11px] text-santos-cyan hc-text">Recursos inclusivos</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Banner Informativo Rápido -->
+                <div class="bg-santos-ocean/20 backdrop-blur-sm border border-santos-cyan/20 p-3.5 rounded-xl flex items-center space-x-3 hc-target">
+                    <i class="fa-solid fa-circle-info text-santos-gold text-xl"></i>
+                    <p class="text-xs text-gray-200 leading-snug hc-text">
+                        <strong>Dica Santos:</strong> O VLT é a forma mais rápida de conectar a Orla de Santos ao Centro Histórico!
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2. TELA DE TRANSPORTE & VLT -->
+            <section id="screen-transport" class="screen-fade hidden space-y-4">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-bus text-santos-gold"></i> Transporte & VLT
+                    </h2>
+                    <span class="text-xs bg-santos-ocean/40 px-2.5 py-1 rounded-full text-santos-cyan font-semibold border border-santos-cyan/30 hc-text">Linha 1 VLT</span>
+                </div>
+
+                <!-- Próximos VLTs ao Vivo -->
+                <div class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 rounded-2xl p-4 shadow-lg hc-target relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <p class="text-xs text-santos-cyan uppercase font-bold tracking-wider hc-text">Estação Ana Costa</p>
+                            <h3 class="text-lg font-bold text-white hc-text">Sentido Porto</h3>
+                        </div>
+                        <div class="flex items-center space-x-1.5 bg-emerald-500/20 text-emerald-400 text-[11px] px-2.5 py-1 rounded-full border border-emerald-500/40">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-live"></span>
+                            <span class="font-bold">Tempo Real</span>
+                        </div>
+                    </div>
+
+                    <!-- Card de Tempo Destaque -->
+                    <div class="bg-gradient-to-r from-santos-ocean to-santos-primary p-4 rounded-xl flex items-center justify-between border border-santos-cyan/20 mb-3 hc-target">
+                        <div>
+                            <span class="text-xs text-santos-cyan uppercase font-medium block">Próxima Partida</span>
+                            <span class="text-3xl font-black text-santos-gold hc-text">04 MIN</span>
+                        </div>
+                        <i class="fa-solid fa-train-tram text-4xl text-santos-cyan/40"></i>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between p-2 rounded-lg bg-santos-dark/50 border border-white/5 hc-target">
+                            <span class="text-gray-300 hc-text">Segundo VLT (Porto)</span>
+                            <span class="font-bold text-white hc-text">14 min</span>
+                        </div>
+                        <div class="flex justify-between p-2 rounded-lg bg-santos-dark/50 border border-white/5 hc-target">
+                            <span class="text-gray-300 hc-text">Terceiro VLT (Porto)</span>
+                            <span class="font-bold text-white hc-text">24 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opções Rápidas de Ação -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="openTicketModal()" class="touch-active bg-santos-accent hover:bg-santos-gold text-santos-dark font-bold p-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm hc-accent">
+                        <i class="fa-solid fa-ticket text-lg"></i> Comprar Bilhete
+                    </button>
+                    <button onclick="navigateTo('route')" class="touch-active bg-santos-ocean/40 border border-santos-cyan/40 hover:bg-santos-ocean text-white font-bold p-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm hc-target">
+                        <i class="fa-solid fa-route text-lg text-santos-gold"></i> Buscar Rota
+                    </button>
+                </div>
+
+                <!-- Linhas de Ônibus & Outros -->
+                <div class="bg-santos-primary/60 backdrop-blur-md border border-santos-cyan/20 rounded-2xl p-4 space-y-3 hc-target">
+                    <h3 class="text-sm font-bold text-santos-cyan flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-bus-simple"></i> Linhas de Ônibus Municipais Populares
+                    </h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 rounded-xl bg-santos-dark/60 flex justify-between items-center hc-target">
+                            <div>
+                                <span class="font-bold text-santos-gold block">Linha 023</span>
+                                <span class="text-gray-300 text-[11px]">Gonzaga ↔ Centro Histórico</span>
+                            </div>
+                            <span class="bg-santos-ocean/30 text-santos-cyan px-2 py-1 rounded text-[10px]">A cada 8 min</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-santos-dark/60 flex justify-between items-center hc-target">
+                            <div>
+                                <span class="font-bold text-santos-gold block">Linha 154</span>
+                                <span class="text-gray-300 text-[11px]">Ferry Boat ↔ Rodoviária</span>
+                            </div>
+                            <span class="bg-santos-ocean/30 text-santos-cyan px-2 py-1 rounded text-[10px]">A cada 12 min</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. TELA COMO CHEGAR / BUSCA DE ROTA -->
+            <section id="screen-route" class="screen-fade hidden space-y-4">
+                <div class="flex items-center space-x-2">
+                    <button onclick="navigateTo('transport')" class="p-2 rounded-lg bg-santos-ocean/30 text-white hc-target">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <h2 class="text-xl font-extrabold text-white hc-text">Como Chegar</h2>
+                </div>
+
+                <!-- Seletor de Destino -->
+                <div class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 rounded-2xl p-4 shadow-md space-y-3 hc-target">
+                    <label class="text-xs font-semibold text-santos-cyan block uppercase hc-text">Para onde você deseja ir em Santos?</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-santos-gold"></i>
+                        <input type="text" id="destination-input" placeholder="Ex: Praia do Gonzaga, Aquário, Vila Belmiro..." value="Praia do Gonzaga" class="w-full bg-santos-dark border border-santos-cyan/40 rounded-xl py-3 pl-10 pr-4 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-santos-gold hc-target">
+                    </div>
+                    <button onclick="calculateRouteSimulated()" class="w-full bg-santos-ocean hover:bg-santos-cyan/80 text-white font-bold py-3 rounded-xl shadow transition text-sm hc-accent">
+                        <i class="fa-solid fa-magnifying-glass-location"></i> Calcular Melhores Rotas
+                    </button>
+                </div>
+
+                <!-- Resultado de Rotas Calculadas -->
+                <div id="route-results" class="space-y-2.5">
+                    <p class="text-xs font-bold text-santos-cyan uppercase tracking-wider hc-text">Opções de Rota Encontradas:</p>
+                    
+                    <!-- Opção 1: VLT + Caminhada -->
+                    <div onclick="showRouteDetails('VLT + Caminhada', '18 min', 'VLT Sentido Porto até Estação Ana Costa + 5 min de caminhada pela Av. Ana Costa até a praia.')" class="touch-active bg-santos-primary/90 backdrop-blur-md border border-santos-gold/50 hover:border-santos-gold p-3.5 rounded-2xl flex items-center justify-between cursor-pointer shadow-md hc-target">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-santos-gold text-santos-dark p-2.5 rounded-xl text-lg font-bold">
+                                <i class="fa-solid fa-train-tram"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-sm text-white block hc-text">VLT + Caminhada</span>
+                                <span class="text-xs text-emerald-400 font-medium">Recomendado • Mais Rápido</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-lg font-black text-santos-gold block hc-text">18 min</span>
+                            <span class="text-[10px] text-gray-300">Integração VLT</span>
+                        </div>
+                    </div>
+
+                    <!-- Opção 2: Ônibus Direto -->
+                    <div onclick="showRouteDetails('Ônibus Directo 023', '22 min', 'Embarque na Parada Ana Costa. Desembarque na Orla da Praia do Gonzaga.')" class="touch-active bg-santos-primary/60 backdrop-blur-md border border-santos-cyan/20 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer hover:border-santos-cyan hc-target">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-santos-ocean text-white p-2.5 rounded-xl text-lg font-bold">
+                                <i class="fa-solid fa-bus"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-sm text-white block hc-text">Ônibus Linha 023</span>
+                                <span class="text-xs text-gray-300">Sem transbordo</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-lg font-bold text-white block hc-text">22 min</span>
+                            <span class="text-[10px] text-gray-400">R$ 5,20</span>
+                        </div>
+                    </div>
+
+                    <!-- Opção 3: Caminhada -->
+                    <div onclick="showRouteDetails('Caminhada', '32 min', 'Caminhada agradável e plana pelas avenidas arborizadas de Santos (2.3 km).')" class="touch-active bg-santos-primary/60 backdrop-blur-md border border-santos-cyan/20 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer hover:border-santos-cyan hc-target">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-santos-ocean/50 text-santos-cyan p-2.5 rounded-xl text-lg font-bold">
+                                <i class="fa-solid fa-person-walking"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-sm text-white block hc-text">A Pé (Caminhada)</span>
+                                <span class="text-xs text-gray-300">Via Av. Ana Costa</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-lg font-bold text-white block hc-text">32 min</span>
+                            <span class="text-[10px] text-gray-400">2.3 km</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. TELA EXPLORAR SANTOS (PONTOS TURÍSTICOS) -->
+            <section id="screen-explore" class="screen-fade hidden space-y-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-compass text-santos-gold"></i> Explorar Santos
+                    </h2>
+                    <p class="text-xs text-santos-cyan hc-text">Selecione uma categoria para filtrar atrações</p>
+                </div>
+
+                <!-- Filtros de Categorias (Chips Roláveis) -->
+                <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+                    <button onclick="filterAttractions('all')" class="category-btn active px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-santos-gold text-santos-dark shadow-md hc-accent">Todos</button>
+                    <button onclick="filterAttractions('praia')" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-santos-primary/80 backdrop-blur-sm text-santos-cyan border border-santos-cyan/30 hc-target">Praias & Orla</button>
+                    <button onclick="filterAttractions('historico')" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-santos-primary/80 backdrop-blur-sm text-santos-cyan border border-santos-cyan/30 hc-target">Centro Histórico</button>
+                    <button onclick="filterAttractions('natureza')" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-santos-primary/80 backdrop-blur-sm text-santos-cyan border border-santos-cyan/30 hc-target">Natureza & Parques</button>
+                    <button onclick="filterAttractions('esporte')" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-santos-primary/80 backdrop-blur-sm text-santos-cyan border border-santos-cyan/30 hc-target">Futebol & Esportes</button>
+                </div>
+
+                <!-- Lista Dynamic Grid de Pontos Turísticos -->
+                <div id="attractions-list" class="grid grid-cols-1 gap-3.5">
+                    <!-- Gerado Dinamicamente via JS -->
+                </div>
+            </section>
+
+            <!-- 5. TELA DE EVENTOS & CULTURA -->
+            <section id="screen-events" class="screen-fade hidden space-y-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-calendar-star text-santos-gold"></i> Agenda cultural & Eventos
+                    </h2>
+                    <p class="text-xs text-santos-cyan hc-text">O que está acontecendo hoje em Santos</p>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Evento 1 -->
+                    <div class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 rounded-2xl p-3.5 flex gap-3 shadow-md hc-target">
+                        <div class="bg-gradient-to-b from-santos-ocean to-santos-primary p-3 rounded-xl flex flex-col justify-center items-center text-center min-w-[65px] border border-santos-cyan/20">
+                            <span class="text-[10px] uppercase font-bold text-santos-gold">ABR</span>
+                            <span class="text-2xl font-black text-white leading-none">27</span>
+                            <span class="text-[9px] text-santos-cyan">SÁBADO</span>
+                        </div>
+                        <div class="flex-1">
+                            <span class="bg-santos-gold/20 text-santos-gold border border-santos-gold/30 text-[9px] font-bold px-2 py-0.5 rounded uppercase">Gastronomia</span>
+                            <h3 class="font-bold text-sm text-white mt-1 hc-text">Festival do Café de Santos</h3>
+                            <p class="text-xs text-gray-300 mt-0.5 flex items-center gap-1 hc-text">
+                                <i class="fa-solid fa-location-dot text-santos-gold text-[10px]"></i> Bolsa do Café - Centro Histórico
+                            </p>
+                            <p class="text-[11px] text-santos-cyan mt-1">Das 10h às 19h • Entrada Gratuita</p>
+                        </div>
+                    </div>
+
+                    <!-- Evento 2 -->
+                    <div class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 rounded-2xl p-3.5 flex gap-3 shadow-md hc-target">
+                        <div class="bg-gradient-to-b from-santos-ocean to-santos-primary p-3 rounded-xl flex flex-col justify-center items-center text-center min-w-[65px] border border-santos-cyan/20">
+                            <span class="text-[10px] uppercase font-bold text-santos-gold">MAI</span>
+                            <span class="text-2xl font-black text-white leading-none">02</span>
+                            <span class="text-[9px] text-santos-cyan">QUINTA</span>
+                        </div>
+                        <div class="flex-1">
+                            <span class="bg-santos-cyan/20 text-santos-cyan border border-santos-cyan/30 text-[9px] font-bold px-2 py-0.5 rounded uppercase">Exposição</span>
+                            <h3 class="font-bold text-sm text-white mt-1 hc-text">Exposição Santos Antiga e o Porto</h3>
+                            <p class="text-xs text-gray-300 mt-0.5 flex items-center gap-1 hc-text">
+                                <i class="fa-solid fa-location-dot text-santos-gold text-[10px]"></i> Pinacoteca Benedicto Calixto
+                            </p>
+                            <p class="text-[11px] text-santos-cyan mt-1">14h às 18h • Gratuito</p>
+                        </div>
+                    </div>
+
+                    <!-- Evento 3 -->
+                    <div class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 rounded-2xl p-3.5 flex gap-3 shadow-md hc-target">
+                        <div class="bg-gradient-to-b from-santos-ocean to-santos-primary p-3 rounded-xl flex flex-col justify-center items-center text-center min-w-[65px] border border-santos-cyan/20">
+                            <span class="text-[10px] uppercase font-bold text-santos-gold">MAI</span>
+                            <span class="text-2xl font-black text-white leading-none">10</span>
+                            <span class="text-[9px] text-santos-cyan">SEXTA</span>
+                        </div>
+                        <div class="flex-1">
+                            <span class="bg-santos-accent/20 text-santos-accent border border-santos-accent/30 text-[9px] font-bold px-2 py-0.5 rounded uppercase">Música</span>
+                            <h3 class="font-bold text-sm text-white mt-1 hc-text">Música no Jardim da Orla</h3>
+                            <p class="text-xs text-gray-300 mt-0.5 flex items-center gap-1 hc-text">
+                                <i class="fa-solid fa-location-dot text-santos-gold text-[10px]"></i> Fonte do Gonzaga
+                            </p>
+                            <p class="text-[11px] text-santos-cyan mt-1">A partir das 18h • Aberto ao público</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. TELA DE ACESSIBILIDADE DETALHADA -->
+            <section id="screen-accessibility" class="screen-fade hidden space-y-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-universal-access text-santos-gold"></i> Central de Acessibilidade
+                    </h2>
+                    <p class="text-xs text-santos-cyan hc-text">Santos é uma cidade inclusiva para todos os visitantes</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="toggleAudioReader()" class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 p-4 rounded-2xl text-center space-y-2 hc-target">
+                        <div class="w-12 h-12 bg-santos-ocean/40 text-santos-gold rounded-full flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </div>
+                        <span class="font-bold text-sm text-white block hc-text">Leitura em Áudio</span>
+                        <p class="text-[11px] text-gray-300 leading-tight">Sintetizador de voz para leitura de tela</p>
+                    </button>
+
+                    <button onclick="toggleHighContrast()" class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 p-4 rounded-2xl text-center space-y-2 hc-target">
+                        <div class="w-12 h-12 bg-santos-ocean/40 text-santos-gold rounded-full flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-circle-half-stroke"></i>
+                        </div>
+                        <span class="font-bold text-sm text-white block hc-text">Alto Contraste</span>
+                        <p class="text-[11px] text-gray-300 leading-tight">Aumenta visualização em luz forte</p>
+                    </button>
+
+                    <button onclick="changeFontSize(1)" class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 p-4 rounded-2xl text-center space-y-2 hc-target">
+                        <div class="w-12 h-12 bg-santos-ocean/40 text-santos-gold rounded-full flex items-center justify-center mx-auto text-xl font-black">
+                            A+
+                        </div>
+                        <span class="font-bold text-sm text-white block hc-text">Aumentar Fonte</span>
+                        <p class="text-[11px] text-gray-300 leading-tight">Expande o tamanho das letras</p>
+                    </button>
+
+                    <button onclick="showLibrasInfo()" class="bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/30 p-4 rounded-2xl text-center space-y-2 hc-target">
+                        <div class="w-12 h-12 bg-santos-ocean/40 text-santos-gold rounded-full flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-hands-asl-interpreting"></i>
+                        </div>
+                        <span class="font-bold text-sm text-white block hc-text">Atendimento LIBRAS</span>
+                        <p class="text-[11px] text-gray-300 leading-tight">Vídeo intérprete disponível</p>
+                    </button>
+                </div>
+
+                <!-- Informações de Praia Acessível -->
+                <div class="bg-gradient-to-r from-santos-ocean/40 to-santos-primary/90 backdrop-blur-md p-4 rounded-2xl border border-santos-cyan/30 space-y-2 hc-target">
+                    <h3 class="font-bold text-sm text-santos-gold flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-wheelchair"></i> Programa Praia Acessível
+                    </h3>
+                    <p class="text-xs text-gray-200 leading-relaxed hc-text">
+                        Cadeiras anfíbias e esteiras de acesso ao mar disponíveis nos postos de salvamento da Orla do Gonzaga aos finais de semana.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 7. TELA DO MAPA INTERATIVO SIMULADO -->
+            <section id="screen-map" class="screen-fade hidden space-y-3">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-map-location-dot text-santos-gold"></i> Mapa Turístico
+                    </h2>
+                    <span class="text-xs text-santos-cyan bg-santos-primary px-2.5 py-1 rounded-full border border-santos-cyan/20">Santos - SP</span>
+                </div>
+
+                <!-- Simulação de Mapa com Pinos Interativos -->
+                <div class="relative w-full h-[360px] bg-santos-primary rounded-2xl border-2 border-santos-cyan/30 overflow-hidden shadow-inner flex items-center justify-center bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80');">
+                    <!-- Overlay azul marinho sobre imagem para padrão de mapa -->
+                    <div class="absolute inset-0 bg-santos-primary/70 backdrop-brightness-75"></div>
+
+                    <!-- Pins sobre o mapa simulado -->
+                    <button onclick="showAttractionDetail('bondinho')" class="absolute top-[25%] left-[35%] touch-active bg-santos-accent text-santos-dark p-2 rounded-full font-bold shadow-lg animate-bounce flex items-center justify-center w-8 h-8 border-2 border-white">
+                        <i class="fa-solid fa-train"></i>
+                    </button>
+
+                    <button onclick="showAttractionDetail('aquario')" class="absolute top-[65%] left-[75%] touch-active bg-santos-ocean text-white p-2 rounded-full font-bold shadow-lg flex items-center justify-center w-8 h-8 border-2 border-white">
+                        <i class="fa-solid fa-fish"></i>
+                    </button>
+
+                    <button onclick="showAttractionDetail('gonzaga')" class="absolute top-[60%] left-[45%] touch-active bg-santos-gold text-santos-dark p-2 rounded-full font-bold shadow-lg flex items-center justify-center w-8 h-8 border-2 border-white">
+                        <i class="fa-solid fa-umbrella-beach"></i>
+                    </button>
+
+                    <button onclick="showAttractionDetail('vila')" class="absolute top-[35%] left-[20%] touch-active bg-black text-white p-2 rounded-full font-bold shadow-lg flex items-center justify-center w-8 h-8 border-2 border-white">
+                        <i class="fa-solid fa-futbol"></i>
+                    </button>
+
+                    <div class="absolute bottom-3 left-3 right-3 bg-santos-dark/90 backdrop-blur-md p-2.5 rounded-xl border border-santos-cyan/30 text-center text-xs text-santos-cyan hc-target">
+                        <i class="fa-solid fa-hand-pointer text-santos-gold mr-1"></i> Toque nos ícones para ver detalhes do local no mapa
+                    </div>
+                </div>
+
+                <!-- Legenda do Mapa -->
+                <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-300">
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-santos-accent"></span> Centro Histórico</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-santos-gold"></span> Praias da Orla</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-santos-ocean"></span> Aquário / Orquidário</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-black"></span> Estádio Vila Belmiro</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- MODAL 1: DETALHES DO PONTO TURÍSTICO -->
+        <div id="attraction-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center p-0 sm:p-4">
+            <div class="bg-santos-primary border border-santos-cyan/40 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl screen-fade max-h-[85vh] overflow-y-auto hc-target">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span id="modal-category" class="bg-santos-ocean/40 text-santos-cyan text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border border-santos-cyan/30">Categoria</span>
+                        <h3 id="modal-title" class="text-2xl font-black text-white mt-1 hc-text">Nome da Atração</h3>
+                    </div>
+                    <button onclick="closeModal('attraction-modal')" class="text-gray-400 hover:text-white p-2 text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div id="modal-image" class="w-full h-40 bg-cover bg-center rounded-2xl border border-white/10" style="background-image: url('https://placehold.co/600x400');"></div>
+
+                <p id="modal-description" class="text-xs text-gray-200 leading-relaxed hc-text">
+                    Descrição do local...
+                </p>
+
+                <div class="bg-santos-dark/60 p-3 rounded-xl space-y-1.5 text-xs">
+                    <div class="flex items-center gap-2 text-santos-cyan">
+                        <i class="fa-solid fa-clock text-santos-gold"></i> <span id="modal-hours">Horário de Funcionamento</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-santos-cyan">
+                        <i class="fa-solid fa-location-dot text-santos-gold"></i> <span id="modal-address">Endereço</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="routeToCurrentAttraction()" class="flex-1 bg-santos-gold hover:bg-santos-accent text-santos-dark font-extrabold py-3 rounded-xl shadow-lg text-sm hc-accent">
+                        <i class="fa-solid fa-route"></i> Como Chegar
+                    </button>
+                    <button onclick="closeModal('attraction-modal')" class="px-4 bg-santos-ocean/30 text-white font-bold rounded-xl border border-santos-cyan/30 text-sm hc-target">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL 2: COMPRA DE PASSAGEM VLT & QR CODE -->
+        <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center p-0 sm:p-4">
+            <div class="bg-santos-primary border border-santos-cyan/40 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl screen-fade hc-target">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-black text-white flex items-center gap-2 hc-text">
+                        <i class="fa-solid fa-ticket text-santos-gold"></i> Bilhete VLT Santos
+                    </h3>
+                    <button onclick="closeModal('ticket-modal')" class="text-gray-400 hover:text-white p-1 text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Conteúdo 1: Seleção de Bilhetes -->
+                <div id="ticket-step-1" class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-xs text-santos-cyan font-bold uppercase block">Selecione a Quantidade</label>
+                        <div class="flex items-center justify-between bg-santos-dark p-3 rounded-xl border border-santos-cyan/30 hc-target">
+                            <span class="text-sm font-bold text-white hc-text">Passagem Unitária (VLT)</span>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="updateTicketQty(-1)" class="w-8 h-8 bg-santos-ocean/50 text-white rounded-lg font-bold text-lg flex items-center justify-center">-</button>
+                                <span id="ticket-qty" class="text-lg font-extrabold text-santos-gold">1</span>
+                                <button onclick="updateTicketQty(1)" class="w-8 h-8 bg-santos-ocean/50 text-white rounded-lg font-bold text-lg flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-santos-ocean/20 p-3 rounded-xl border border-santos-cyan/20 flex justify-between items-center hc-target">
+                        <span class="text-xs text-gray-300">Valor Total:</span>
+                        <span id="ticket-total" class="text-2xl font-black text-santos-gold hc-text">R$ 5,20</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-xs text-santos-cyan font-bold uppercase block">Forma de Pagamento</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="processPayment('PIX')" class="touch-active bg-santos-dark hover:bg-santos-ocean/30 border border-santos-cyan/40 p-3 rounded-xl text-center space-y-1 hc-target">
+                                <i class="fa-solid fa-qrcode text-santos-gold text-xl"></i>
+                                <span class="text-xs font-bold block text-white hc-text">PIX Instantâneo</span>
+                            </button>
+                            <button onclick="processPayment('Cartão')" class="touch-active bg-santos-dark hover:bg-santos-ocean/30 border border-santos-cyan/40 p-3 rounded-xl text-center space-y-1 hc-target">
+                                <i class="fa-solid fa-credit-card text-santos-cyan text-xl"></i>
+                                <span class="text-xs font-bold block text-white hc-text">Cartão Contactless</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo 2: QR Code Final Gerado -->
+                <div id="ticket-step-2" class="hidden text-center space-y-4 py-2">
+                    <div class="bg-emerald-500/20 text-emerald-400 p-2 rounded-xl text-xs font-bold border border-emerald-500/30">
+                        <i class="fa-solid fa-circle-check"></i> Pagamento Aprovado com Sucesso!
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center shadow-lg">
+                        <!-- QR Code Ilustrativo via SVG -->
+                        <svg class="w-full h-full text-santos-dark" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm11-2h7v8h-7V2zm2 2v4h3V4h-3zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm13-2h3v3h-3v-3zm0 5h5v3h-5v-3zm3-2h2v2h-2v-2zM14 14h2v2h-2v-2zm0 3h3v2h-3v-2zm-3-3h2v8h-2v-8z"/>
+                        </svg>
+                    </div>
+
+                    <p class="text-xs text-santos-cyan font-medium hc-text">
+                        Aproxime o QR Code na catraca do VLT para liberar o seu acesso.
+                    </p>
+
+                    <button onclick="closeModal('ticket-modal')" class="w-full bg-santos-gold text-santos-dark font-extrabold py-3 rounded-xl text-sm hc-accent">
+                        Concluir e Voltar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA NAVEGAÇÃO INFERIOR FIXA (MENU KIOSK) COM DETALHE ONDULADO -->
+        <div class="relative z-20">
+            <!-- Padrão ondulado sutil no topo do menu inferior -->
+            <svg class="w-full h-3 -mb-1 text-santos-primary opacity-90" viewBox="0 0 500 20" preserveAspectRatio="none">
+                <path d="M0,20 C150,0 350,20 500,0 L500,20 L0,20 Z" fill="currentColor"></path>
+            </svg>
+            <nav class="bg-santos-primary border-t border-santos-cyan/20 px-3 py-2 flex justify-around items-center hc-target">
+                <button onclick="navigateTo('home')" class="nav-btn active flex flex-col items-center text-santos-gold touch-active" id="nav-home">
+                    <i class="fa-solid fa-house text-lg"></i>
+                    <span class="text-[10px] font-bold mt-0.5">Início</span>
+                </button>
+                <button onclick="navigateTo('transport')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-santos-cyan touch-active" id="nav-transport">
+                    <i class="fa-solid fa-bus text-lg"></i>
+                    <span class="text-[10px] font-bold mt-0.5">Transporte</span>
+                </button>
+                <button onclick="navigateTo('explore')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-santos-cyan touch-active" id="nav-explore">
+                    <i class="fa-solid fa-compass text-lg"></i>
+                    <span class="text-[10px] font-bold mt-0.5">Explorar</span>
+                </button>
+                <button onclick="navigateTo('map')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-santos-cyan touch-active" id="nav-map">
+                    <i class="fa-solid fa-map-location-dot text-lg"></i>
+                    <span class="text-[10px] font-bold mt-0.5">Mapa</span>
+                </button>
+                <button onclick="navigateTo('events')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-santos-cyan touch-active" id="nav-events">
+                    <i class="fa-solid fa-calendar-days text-lg"></i>
+                    <span class="text-[10px] font-bold mt-0.5">Eventos</span>
+                </button>
+            </nav>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT DE LÓGICA E INTERAÇÕES -->
+    <script>
+        // --- BASE DE DADOS DOS PONTOS TURÍSTICOS DE SANTOS ---
+        const attractionsData = [
+            {
+                id: 'bondinho',
+                title: 'Bondinho do Centro Histórico',
+                category: 'historico',
+                categoryLabel: 'Centro Histórico',
+                image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80',
+                shortDesc: 'Passeio em elétricos originais do século XX pelas ruas históricas de Santos.',
+                fullDesc: 'O passeio de bonde é uma verdadeira viagem no tempo. Com bondes vindos de várias partes do mundo, o trajeto passa pelos principais pontos do Centro Histórico de Santos com guia turístico.',
+                hours: 'Terça a Domingo: 11h às 17h',
+                address: 'Praça Mauá, s/n - Centro Histórico'
+            },
+            {
+                id: 'aquario',
+                title: 'Aquário Municipal de Santos',
+                category: 'natureza',
+                categoryLabel: 'Natureza & Vida Marinha',
+                image: 'https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=600&q=80',
+                shortDesc: 'O aquário mais antigo do Brasil com centenas de espécies marinhas.',
+                fullDesc: 'Pioneiro no Brasil, o Aquário de Santos abriga animais de água doce e salgada, tanques de toque, pinguins e tubarões. Uma atração imperdível para toda a família na Ponta da Praia.',
+                hours: 'Terça a Domingo: 09h às 18h',
+                address: 'Praça Luiz La Scala, s/n - Ponta da Praia'
+            },
+            {
+                id: 'gonzaga',
+                title: 'Praia do Gonzaga & Jardins da Orla',
+                category: 'praia',
+                categoryLabel: 'Praias & Orla',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+                shortDesc: 'O coração da orla santista e o maior jardim praiano em extensão do mundo (Guinness).',
+                fullDesc: 'Localizada no bairro mais movimentado de Santos, a Praia do Gonzaga conta com ampla faixa de areia, quiosques, ciclofaixas e proximidade com o centro comercial e hotéis.',
+                hours: 'Acesso Livre (24 horas)',
+                address: 'Av. Vicente de Carvalho - Gonzaga'
+            },
+            {
+                id: 'vila',
+                title: 'Estádio Vila Belmiro (Museu Pelé/Santos FC)',
+                category: 'esporte',
+                categoryLabel: 'Futebol & Tradição',
+                image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80',
+                shortDesc: 'Templo do futebol mundial onde Rei Pelé encantou o planeta.',
+                fullDesc: 'Conheça o Templo do Futebol. O tour do estádio Urbano Caldeira (Vila Belmiro) inclui visita ao Memorial das Conquistas, vestiários e acesso à beira do gramado.',
+                hours: 'Terça a Domingo: 09h às 18h',
+                address: 'Rua Princesa Isabel, s/n - Vila Belmiro'
+            },
+            {
+                id: 'orquidario',
+                title: 'Orquidário Municipal de Santos',
+                category: 'natureza',
+                categoryLabel: 'Natureza & Parques',
+                image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80',
+                shortDesc: 'Parque zoo-botânico com animais soltos e milhares de espécies de orquídeas.',
+                fullDesc: 'Um verdadeiro refúgio verde no bairro do José Menino. Possui viveiros abertos, trilhas, bromélias e pavões que passeiam livremente entre os visitantes.',
+                hours: 'Terça a Domingo: 09h às 18h',
+                address: 'Praça Washington, s/n - José Menino'
+            }
+        ];
+
+        // --- ESTADO GLOBAL DA APLICAÇÃO ---
+        let currentScreen = 'home';
+        let isAudioActive = false;
+        let isHighContrast = false;
+        let fontScale = 1;
+        let ticketQty = 1;
+        const TICKET_PRICE = 5.20;
+        let selectedAttractionForRoute = 'Praia do Gonzaga';
+
+        // --- ATUALIZAÇÃO DO RELÓGIO AO VIVO ---
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').innerText = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- NAVEGAÇÃO SPA (SINGLE PAGE APPLICATION) ---
+        function navigateTo(screenId) {
+            playSoundEffect();
+
+            // Oculta todas as telas
+            const screens = ['home', 'transport', 'route', 'explore', 'events', 'accessibility', 'map'];
+            screens.forEach(id => {
+                const el = document.getElementById(`screen-${id}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            // Exibe a tela desejada
+            const target = document.getElementById(`screen-${screenId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                currentScreen = screenId;
+            }
+
+            // Atualiza estados dos botões do Menu Inferior
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-santos-gold');
+                btn.classList.add('text-gray-400');
+            });
+
+            const activeNav = document.getElementById(`nav-${screenId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-gray-400');
+                activeNav.classList.add('text-santos-gold');
+            }
+
+            // Anúncio falado acessível
+            if (isAudioActive) {
+                speakText(`Tela ${screenId} carregada.`);
+            }
+        }
+
+        // --- MÓDULO EXPLORAR (FILTRAGEM DE ATRAÇÕES) ---
+        function renderAttractions(filter = 'all') {
+            const container = document.getElementById('attractions-list');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? attractionsData 
+                : attractionsData.filter(item => item.category === filter);
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'touch-active bg-santos-primary/80 backdrop-blur-md border border-santos-cyan/20 rounded-2xl p-3 flex gap-3 shadow-md hover:border-santos-cyan cursor-pointer hc-target';
+                card.onclick = () => showAttractionDetail(item.id);
+
+                card.innerHTML = `
+                    <div class="w-24 h-24 rounded-xl bg-cover bg-center flex-shrink-0 border border-white/10" style="background-image: url('${item.image}')"></div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-bold text-santos-cyan uppercase bg-santos-ocean/30 px-2 py-0.5 rounded border border-santos-cyan/20">${item.categoryLabel}</span>
+                            <h3 class="font-bold text-sm text-white mt-1 leading-tight hc-text">${item.title}</h3>
+                            <p class="text-[11px] text-gray-300 line-clamp-2 mt-0.5 hc-text">${item.shortDesc}</p>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-santos-gold font-semibold pt-1">
+                            <span>Ver mais detalhes</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterAttractions(cat) {
+            playSoundEffect();
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-santos-gold', 'text-santos-dark', 'hc-accent');
+                btn.classList.add('bg-santos-primary/80', 'backdrop-blur-sm', 'text-santos-cyan', 'hc-target');
+            });
+
+            event.currentTarget.classList.remove('bg-santos-primary/80', 'backdrop-blur-sm', 'text-santos-cyan');
+            event.currentTarget.classList.add('bg-santos-gold', 'text-santos-dark', 'hc-accent');
+
+            renderAttractions(cat);
+        }
+
+        // MODAL DETALHES PONTO TURÍSTICO
+        function showAttractionDetail(id) {
+            playSoundEffect();
+            const item = attractionsData.find(a => a.id === id);
+            if (!item) return;
+
+            selectedAttractionForRoute = item.title;
+            document.getElementById('modal-category').innerText = item.categoryLabel;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-description').innerText = item.fullDesc;
+            document.getElementById('modal-hours').innerText = item.hours;
+            document.getElementById('modal-address').innerText = item.address;
+            document.getElementById('modal-image').style.backgroundImage = `url('${item.image}')`;
+
+            document.getElementById('attraction-modal').classList.remove('hidden');
+
+            if (isAudioActive) {
+                speakText(`${item.title}. ${item.shortDesc}`);
+            }
+        }
+
+        function routeToCurrentAttraction() {
+            closeModal('attraction-modal');
+            document.getElementById('destination-input').value = selectedAttractionForRoute;
+            navigateTo('route');
+        }
+
+        // MODAL COMPRA PASSAGEM VLT
+        function openTicketModal() {
+            playSoundEffect();
+            ticketQty = 1;
+            updateTicketQty(0);
+            document.getElementById('ticket-step-1').classList.remove('hidden');
+            document.getElementById('ticket-step-2').classList.add('hidden');
+            document.getElementById('ticket-modal').classList.remove('hidden');
+        }
+
+        function updateTicketQty(change) {
+            ticketQty = Math.max(1, ticketQty + change);
+            document.getElementById('ticket-qty').innerText = ticketQty;
+            const total = (ticketQty * TICKET_PRICE).toFixed(2).replace('.', ',');
+            document.getElementById('ticket-total').innerText = `R$ ${total}`;
+        }
+
+        function processPayment(method) {
+            playSoundEffect();
+            document.getElementById('ticket-step-1').classList.add('hidden');
+            document.getElementById('ticket-step-2').classList.remove('hidden');
+            if (isAudioActive) {
+                speakText(`Pagamento com ${method} aprovado. Seu QR Code de acesso está na tela.`);
+            }
+        }
+
+        function closeModal(modalId) {
+            playSoundEffect();
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // SIMULAÇÃO DE ROTA
+        function calculateRouteSimulated() {
+            playSoundEffect();
+            const dest = document.getElementById('destination-input').value;
+            if (isAudioActive) {
+                speakText(`Calculando melhores rotas para ${dest}`);
+            }
+        }
+
+        function showRouteDetails(tipo, tempo, instrucao) {
+            playSoundEffect();
+            alert(`🚌 Trajeto Selecionado: ${tipo}\n⏱️ Tempo Estimado: ${tempo}\n📍 Detalhes: ${instrucao}`);
+        }
+
+        // RECURSOS DE ACESSIBILIDADE
+        function toggleAudioReader() {
+            isAudioActive = !isAudioActive;
+            const icon = document.getElementById('audio-icon');
+            if (isAudioActive) {
+                icon.className = "fa-solid fa-volume-xmark text-santos-gold";
+                speakText("Leitor de áudio ativado. Toque nos elementos para leitura.");
+            } else {
+                icon.className = "fa-solid fa-volume-high";
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'pt-BR';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function toggleHighContrast() {
+            isHighContrast = !isHighContrast;
+            document.body.classList.toggle('high-contrast');
+            playSoundEffect();
+        }
+
+        function changeFontSize(delta) {
+            fontScale += delta * 0.1;
+            if (fontScale > 1.3) fontScale = 0.9;
+            document.getElementById('kiosk-container').style.fontSize = `${fontScale}rem`;
+            playSoundEffect();
+        }
+
+        function showLibrasInfo() {
+            alert("🤟 Atendimento LIBRAS\n\nConectando com o intérprete virtual da Prefeitura de Santos...");
+        }
+
+        // SOM DE FEEDBACK AO TOCAR
+        function playSoundEffect() {
+            if (navigator.vibrate) {
+                navigator.vibrate(15);
+            }
+        }
+
+        // INICIALIZAÇÃO AO CARREGAR A PÁGINA
+        window.onload = function() {
+            renderAttractions('all');
+        };
+    </script>
+</body>
+</html>
